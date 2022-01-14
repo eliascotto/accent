@@ -4,9 +4,9 @@
 
 ;; Author: Elia Scotto <eliascotto94@gmail.com>
 ;; URL: https://github.com/elias94/accent
-;; Keywords: accent, diacritic, characters
+;; Keywords: i18n
 ;; Version: 1.0
-;; Package-Requires: ((popup "0.5.8"))
+;; Package-Requires: ((emacs "24.1") (popup "0.5.8"))
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -31,7 +31,7 @@
 (require 'popup)
 
 (defconst accent-version "1.0"
-  "Version of accent.el")
+  "Version of accent.el.")
 
 (setq *diacritics* '((a (à á â ä æ ã å ā))
                      (c (ç ć č))
@@ -56,13 +56,9 @@
                      (Y (Ÿ))
                      (Z (Ž Ź Ż))))
 
-;; Close the popup on ESC
-(define-key popup-menu-keymap (kbd "ESC") 'keyboard-quit)
-
 ;;;###autoload
 (defun accent-menu ()
-  "Display a popup menu with available accents if
-  current/previous character is matching."
+  "Display a popup menu with available accents if current/previous character is matching."
   (interactive)
   (let* ((curr (intern (string (char-after))))
          (diac (assoc curr *diacritics*)))
