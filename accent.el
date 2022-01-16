@@ -5,7 +5,7 @@
 ;; Author: Elia Scotto <eliascotto94@gmail.com>
 ;; URL: https://github.com/elias94/accent
 ;; Keywords: i18n
-;; Version: 1.0
+;; Version: 1.1
 ;; Package-Requires: ((emacs "24.1") (popup "0.5.8"))
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -30,10 +30,22 @@
 
 (require 'popup)
 
-(defconst accent-version "1.0"
+(defconst accent-version "1.1"
   "Version of accent.el.")
 
-(defvar accent-diacritics nil)
+(defgroup accent nil
+  "Shows popup with accented letters while pressing C-x C-a on an accented character."
+  :group 'convenience)
+
+(defcustom accent-position 'after
+  "If set to 'after (default) it takes the character after (under) the
+  cursor, if set to 'before it takes the caracter before the cursor.
+  Set it to 'before if you want to set the accent at the end of the typing."
+  :group 'accent
+  :type 'symbol)
+
+(defvar accent-diacritics nil
+  "Diacritics available.")
 
 (setq accent-diacritics '((a (à á â ä æ ã å ā))
                           (c (ç ć č))
@@ -62,16 +74,17 @@
 (defun accent-menu ()
   "Display a popup menu with available accents if current character is matching."
   (interactive)
-  (let* ((curr (intern (string (char-after))))
+  (let* ((after? (eq accent-position 'after))
+         (char (if after? (char-after) (char-before)))
+         (curr (intern (string char)))
          (diac (assoc curr accent-diacritics)))
     (if diac
-      (let ((opt (popup-menu* (cadr diac))))
-        (when opt
-          (progn
-            (delete-char 1)
-            (insert (symbol-name opt)))))
+        (let ((opt (popup-menu* (cadr diac))))
+          (when opt
+            (progn
+              (delete-char (if after? 1 -1))
+              (insert (symbol-name opt)))))
       (message "No accented characters available"))))
-
 
 (global-set-key (kbd "C-x C-a") 'accent-menu)
 
