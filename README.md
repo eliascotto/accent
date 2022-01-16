@@ -22,7 +22,7 @@ If the character has no accents available, a message will be prompted accordingl
 ## Config 
 
 ``` emacs-lisp
-;; Use the character before instead of after the cursor
+;; Use the character before the cursor instead of after
 (setq accent-position 'before)
 ```
 
