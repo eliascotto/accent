@@ -19,6 +19,8 @@ If the character has no accents available, a message will be prompted accordingl
 
 ![screen](etc/img/screen.png)
 
+Here I'm using `cursor-type: 'block` and `accent-position: 'after`.
+
 ## Config 
 
 ``` emacs-lisp

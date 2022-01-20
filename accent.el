@@ -1,11 +1,12 @@
-;;; accent.el --- Popup for accented characters -*- lexical-binding: t; -*-
+;;; accent.el --- Popup for accented characters (diacritics) -*- lexical-binding: t; -*-
 
 ;; Copyright (c) 2022 Elia Scotto
 
 ;; Author: Elia Scotto <eliascotto94@gmail.com>
+;; Maintainer: Elia Scotto <eliascotto94@gmail.com>
 ;; URL: https://github.com/elias94/accent
 ;; Keywords: i18n
-;; Version: 1.1
+;; Version: 1.2
 ;; Package-Requires: ((emacs "24.1") (popup "0.5.8"))
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -24,69 +25,76 @@
 ;;; Commentary:
 
 ;; accent.el enable a visual popup for using accented characters in Emacs.
+;;
+;; Is recommended to bind a global keybinding to use when typing such
+;; as `C-x C-a`; add the following to your configuration:
+;;
+;; (global-set-key (kbd "C-x C-a") 'accent-menu)
+;;
 ;; See README.md for more information.
+;; https://github.com/elias94/accent/blob/main/README.md
 
 ;;; Code:
 
 (require 'popup)
 
-(defconst accent-version "1.1"
+(defconst accent-version "1.2"
   "Version of accent.el.")
 
 (defgroup accent nil
-  "Shows popup with accented letters while pressing C-x C-a on an accented character."
+  "Shows popup with accented letters while pressing C-x C-a on an
+accented character."
   :group 'convenience)
 
-(defcustom accent-position 'after
-  "If set to 'after (default) it takes the character after (under) the
-  cursor, if set to 'before it takes the caracter before the cursor.
-  Set it to 'before if you want to set the accent at the end of the typing."
+(defcustom accent-position 'before
+  "If set to 'before (default) it takes the character before the cursor.
+If set to 'after it takes the caracter after the cursor. Set it to 'after
+if you have the cursor-type set to 'block and want to apply an accent to
+the character under the cursor."
   :group 'accent
   :type 'symbol)
 
-(defvar accent-diacritics nil
-  "Diacritics available.")
-
-(setq accent-diacritics '((a (à á â ä æ ã å ā))
-                          (c (ç ć č))
-                          (e (è é ê ë ē ė ę))
-                          (i (î ï í ī į ì))
-                          (l (ł))
-                          (n (ñ ń))
-                          (o (ô ö ò ó œ ø ō õ))
-                          (s (ß ś š))
-                          (u (û ü ù ú ū))
-                          (y (ÿ))
-                          (z (ž ź ż))
-                          (A (À Á Â Ä Æ Ã Å Ā))
-                          (C (Ç Ć Č))
-                          (E (È É Ê Ë Ē Ė Ę))
-                          (I (Î Ï Í Ī Į Ì))
-                          (L (Ł))
-                          (N (Ñ Ń))
-                          (O (Ô Ö Ò Ó Œ Ø Ō Õ))
-                          (S (Ś Š))
-                          (U (Û Ü Ù Ú Ū))
-                          (Y (Ÿ))
-                          (Z (Ž Ź Ż))))
+(defvar accent-diacritics '((a (à á â ä æ ã å ā))
+                            (c (ç ć č))
+                            (e (è é ê ë ē ė ę))
+                            (i (î ï í ī į ì))
+                            (l (ł))
+                            (n (ñ ń))
+                            (o (ô ö ò ó œ ø ō õ))
+                            (s (ß ś š))
+                            (u (û ü ù ú ū))
+                            (y (ÿ))
+                            (z (ž ź ż))
+                            (A (À Á Â Ä Æ Ã Å Ā))
+                            (C (Ç Ć Č))
+                            (E (È É Ê Ë Ē Ė Ę))
+                            (I (Î Ï Í Ī Į Ì))
+                            (L (Ł))
+                            (N (Ñ Ń))
+                            (O (Ô Ö Ò Ó Œ Ø Ō Õ))
+                            (S (Ś Š))
+                            (U (Û Ü Ù Ú Ū))
+                            (Y (Ÿ))
+                            (Z (Ž Ź Ż)))
+  "List of diacritics available. For each character, includes a list of available
+options to be displayed in the menu..")
 
 ;;;###autoload
 (defun accent-menu ()
   "Display a popup menu with available accents if current character is matching."
   (interactive)
-  (let* ((after? (eq accent-position 'after))
-         (char (if after? (char-after) (char-before)))
-         (curr (intern (string char)))
-         (diac (assoc curr accent-diacritics)))
+  (let* ((after? (eq accent-position 'after)))
+       (char (if after? (char-after) (char-before)))
+       (curr (intern (string char)))
+       (diac (assoc curr accent-diacritics))
     (if diac
-        (let ((opt (popup-menu* (cadr diac))))
-          (when opt
-            (progn
-              (delete-char (if after? 1 -1))
-              (insert (symbol-name opt)))))
+      (let ((opt (popup-menu* (cadr diac))))
+        (when opt
+          (progn
+            (delete-char (if after? 1 -1))
+            (insert (symbol-name opt)))))
       (message "No accented characters available"))))
 
-(global-set-key (kbd "C-x C-a") 'accent-menu)
-
 (provide 'accent)
+
 ;;; accent.el ends here
