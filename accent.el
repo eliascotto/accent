@@ -49,7 +49,7 @@ accented character."
 (defcustom accent-position 'before
   "If set to 'before (default) it takes the character before the cursor.
 If set to 'after it takes the caracter after the cursor. Set it to 'after
-if you have the cursor-type set to 'block and want to apply an accent to
+if you have the `cursor-type' set to 'block and want to apply an accent to
 the character under the cursor."
   :group 'accent
   :type 'symbol)
@@ -76,25 +76,25 @@ the character under the cursor."
                             (U (Û Ü Ù Ú Ū))
                             (Y (Ÿ))
                             (Z (Ž Ź Ż)))
-  "List of diacritics available. For each character, includes a list of available
-options to be displayed in the menu..")
+  "List of diacritics available.
+For each character, includes a list
+of available options to be displayed in the popup.")
 
 ;;;###autoload
 (defun accent-menu ()
   "Display a popup menu with available accents if current character is matching."
   (interactive)
-  (let* ((after? (eq accent-position 'after)))
-       (char (if after? (char-after) (char-before)))
-       (curr (intern (string char)))
-       (diac (assoc curr accent-diacritics))
+  (let* ((after? (eq accent-position 'after))
+         (char (if after? (char-after) (char-before)))
+         (curr (intern (string char)))
+         (diac (assoc curr accent-diacritics)))
     (if diac
-      (let ((opt (popup-menu* (cadr diac))))
-        (when opt
-          (progn
-            (delete-char (if after? 1 -1))
-            (insert (symbol-name opt)))))
+        (let ((opt (popup-menu* (cadr diac))))
+          (when opt
+            (progn
+              (delete-char (if after? 1 -1))
+              (insert (symbol-name opt)))))
       (message "No accented characters available"))))
 
 (provide 'accent)
-
 ;;; accent.el ends here
