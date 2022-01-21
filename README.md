@@ -28,10 +28,10 @@ Here I'm using `cursor-type: 'block` and `accent-position: 'after`.
 Bind a key sequence to open the `accent-menu` accordingly.
 
 ``` emacs-lisp
- (global-set-key (kbd "C-x C-a") 'accent-menu)
+(global-set-key (kbd "C-x C-a") 'accent-menu)
 ```
 
-`C-x C-a` is a good choice if not already bound. To find key bindings use
+`C-x C-a` is a good choice if not already bound. To find your emacs key bindings use
 
 ``` emacs-lisp
 C-h k key-sequence
