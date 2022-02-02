@@ -1,3 +1,5 @@
+[![MELPA](https://melpa.org/packages/accent-badge.svg)](https://melpa.org/#/accent)
+
 # accent.el
 
 ## Overview
@@ -20,6 +22,10 @@ If the character has no accents available, a message will be prompted accordingl
 ![screen](etc/img/screen.png)
 
 Here I'm using `cursor-type: 'block` and `accent-position: 'after`.
+
+## Installation
+
+You can install `accent.el` from [MELPA](https://melpa.org/#/accent).
 
 ## Config
 
