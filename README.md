@@ -50,6 +50,16 @@ C-h k key-sequence
 (setq accent-position 'after)
 ```
 
+### accent-custom
+
+Append a list of custom accents to the default collection.
+
+``` emacs-lisp
+(setq accent-custom '((a (ă))
+                      (o (ŏ))
+                      (u (ŭ))))
+```
+
 ---
 
 Copyright (C) 2022 Elia Scotto
