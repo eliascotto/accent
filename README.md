@@ -62,4 +62,9 @@ Append a list of custom accents to the default collection.
 
 ---
 
-Copyright (C) 2022 Elia Scotto
+## Articles
+
+- https://xenodium.com/an-accentuated-emacs-experiment/
+
+## License
+Released under GPLv3.
