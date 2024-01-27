@@ -115,5 +115,28 @@ of available options to be displayed in the popup.")
               (insert (symbol-name opt)))))
       (message "No accented characters available"))))
 
+(declare-function company-begin-backend "company")
+
+;;;###autoload
+(defun accent-company (command &rest _ignored)
+  "Backend for `company' to complete accents.
+
+See `company-backends' for the description of COMMAND."
+  (interactive (list 'interactive))
+  (let* ((after? (eq accent-position 'after))
+         (char (if after? (char-after) (char-before)))
+         (curr (intern (string char)))
+         (diac (assoc curr (accent-lst))))
+    (cl-case command
+      (interactive (company-begin-backend 'my/company-accent))
+      (prefix (when diac
+                (string char)))
+      (candidates (mapcar (lambda (d) (if after?
+                                          (format "%s%s" (string (char-before)) d)
+                                        (format "%s" d)))
+                          (cadr diac)))
+      (post-completion (when after?
+                         (delete-char 1))))))
+
 (provide 'accent)
 ;;; accent.el ends here
