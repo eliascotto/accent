@@ -128,7 +128,7 @@ See `company-backends' for the description of COMMAND."
          (curr (intern (string char)))
          (diac (assoc curr (accent-lst))))
     (cl-case command
-      (interactive (company-begin-backend 'my/company-accent))
+      (interactive (company-begin-backend 'accent-company))
       (prefix (when diac
                 (string char)))
       (candidates (mapcar (lambda (d) (if after?
