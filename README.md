@@ -60,6 +60,10 @@ Append a list of custom accents to the default collection.
                       (u (ŭ))))
 ```
 
+### `company-mode`
+
+If you have [company-mode](https://github.com/company-mode/company-mode) installed, you can use `accent-company` instead of `accent-menu`. It probably doesn't make much sense to add it to `company-backends`, but using it standalone shall suffice if you like `company` more than `popup.el`.
+
 ---
 
 ## Articles
