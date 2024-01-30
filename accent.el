@@ -6,7 +6,7 @@
 ;; Maintainer: Elia Scotto <eliascotto94@gmail.com>
 ;; URL: https://github.com/elias94/accent
 ;; Keywords: i18n
-;; Version: 1.3
+;; Version: 1.4
 ;; Package-Requires: ((emacs "24.3") (popup "0.5.8"))
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -38,7 +38,7 @@
 
 (require 'popup)
 
-(defconst accent-version "1.3"
+(defconst accent-version "1.4"
   "Version of accent.el.")
 
 (defgroup accent nil
