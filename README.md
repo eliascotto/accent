@@ -68,6 +68,10 @@ If you have [company-mode](https://github.com/company-mode/company-mode) install
 (global-set-key (kbd "C-x C-a") 'accent-company)
 ```
 
+### Corfu
+
+Corfu autocompletion is supported with `accent-corfu`. Thanks to [@artelse](https://github.com/artelse) for the help.
+
 ---
 
 ## Articles

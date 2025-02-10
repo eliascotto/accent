@@ -6,7 +6,7 @@
 ;; Maintainer: Elia Scotto <eliascotto94@gmail.com>
 ;; URL: https://github.com/elias94/accent
 ;; Keywords: i18n
-;; Version: 1.4
+;; Version: 1.5
 ;; Package-Requires: ((emacs "24.3") (popup "0.5.8"))
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -30,6 +30,8 @@
 ;; as `C-x C-a`; add the following to your configuration:
 ;;
 ;; (global-set-key (kbd "C-x C-a") 'accent-menu)
+;;
+;; Supported backends: `company`, `corfu`.
 ;;
 ;; See README.md for more information.
 ;; https://github.com/elias94/accent/blob/main/README.md
@@ -101,7 +103,7 @@ of available options to be displayed in the popup.")
 
 ;;;###autoload
 (defun accent-menu ()
-  "Display a popup menu with available accents if current character is matching."
+  "Display a popup completion menu with accents, if current character is matching."
   (interactive)
   (let* ((after? (eq accent-position 'after))
          (char (if after? (char-after) (char-before)))
@@ -119,7 +121,7 @@ of available options to be displayed in the popup.")
 
 ;;;###autoload
 (defun accent-company (command &rest _ignored)
-  "Backend for `company' to complete accents.
+  "Use `company' to display a completion menu for accented characters at point.
 
 See `company-backends' for the description of COMMAND."
   (interactive (list 'interactive))
@@ -137,6 +139,25 @@ See `company-backends' for the description of COMMAND."
                           (cadr diac)))
       (post-completion (when after?
                          (delete-char 1))))))
+
+;;;###autoload
+(defun accent-corfu ()
+  "Use `corfu' to display a completion menu for accented characters at point."
+  (interactive)
+  (let* ((after? (eq accent-position 'after))
+         (char (if after? (char-after) (char-before)))
+         (curr (intern (string char)))
+         (diac (assoc curr (accent-lst))))
+    (if diac
+        (progn
+          (delete-char (if after? 1 -1))
+          (setq-local completion-at-point-functions
+                      (list (lambda ()
+                              (let ((start (point))
+                                    (candidates (mapcar #'symbol-name (cadr diac))))
+                                (list start start candidates :exclusive 'no)))))
+         (completion-at-point))
+      (message "No accented characters available"))))
 
 (provide 'accent)
 ;;; accent.el ends here
